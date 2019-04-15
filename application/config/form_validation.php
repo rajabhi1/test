@@ -72,5 +72,14 @@ $config = array(
                         'rules' => 'trim|required|valid_email'
                 ),
         ),
+
+        'post'=>array(
+
+                array(
+                        'field' => 'cmnt',
+                        'label' => 'Post',
+                        'rules' => 'trim|required'
+                ),
+        ),
 );
 ?>

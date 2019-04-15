@@ -68,5 +68,15 @@ class Record_model extends CI_Model
 		$q=$this->db->where('email',$to_emails)->get('admin');
 		return $q->row();
 	}
+
+	public function get_product(){
+		$q=$this->db->get('product');
+		return $q->result_array();
+	}
+
+	public function product($id){
+		$q= $this->db->where('id',$id)->get('product');
+		return $q->result_array();
+	}
 }
 ?>

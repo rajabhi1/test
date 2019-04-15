@@ -1,8 +1,12 @@
-<?php include('header.php'); ?>
+<?php if(!is_null($this->session->userdata('id'))){ ?>
 	<div class="container">
-		<div class="p-5">
-			<?= anchor("admin/add_user",'Add User',['class'=>'btn btn-outline-primary btn-lg']); ?>
+		<div class="row">
+			<div class="p-5">
+				<?= anchor("admin/add_user",'Add User',['class'=>'btn btn-outline-primary btn-lg']); ?>
+			</div>
+		
 		</div>
+		
 			<?php 
 			if($feedback=$this->session->flashdata('feedback'));
 				$feedback_class=$this->session->flashdata('feedback_class');
@@ -31,7 +35,7 @@
 			  </thead>
 			  <tbody>
 			  		
-			  <?php  $num=1; foreach ($alldata as $key => $value): ?>
+			  <?php  $num=1; foreach ($allrecords as $key => $value): ?>
 			    <tr>
 			    <td>
 			    	<input type="checkbox" name="checkbox[]" class="checkbox" value="<?php echo $value['id']; ?>">
@@ -58,7 +62,7 @@
   			<?PHP echo form_close(); ?>
 		</div>
 	</div>
-<?php include('footer.php'); ?>
+	<?php include('footer.php'); ?>
 <script type="text/javascript">
 	 $(document).ready(function() {
 
@@ -101,3 +105,8 @@
         
     });
 </script>
+<?php
+	 }else{
+	 	redirect('admin/login');
+	} 
+?>

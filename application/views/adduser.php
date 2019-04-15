@@ -1,4 +1,3 @@
-<?php include('header.php'); ?>
 <div class="container p-5">
 	<?= form_open_multipart('admin/userdata') ?>
   <fieldset>
@@ -43,4 +42,3 @@
   </fieldset>
 <?= form_close(); ?>
 </div>
-<?php include('footer.php'); ?>

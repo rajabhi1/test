@@ -1,4 +1,3 @@
-<<?php include('header.php'); ?>
 <div class="container">
  <div class="row">
 	<div class="col-lg-6">
@@ -47,4 +46,3 @@
 	</table>
 	
 </div>
-<?php include('footer.php'); ?>

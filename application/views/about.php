@@ -1,4 +1,3 @@
-<?php include('header.php'); ?>
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 
@@ -102,7 +101,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 		  <div id="caption"></div>
 		</div>
 	</div>
-<?php include('footer.php'); ?>
 <script>
 // Get the modal
 var modal = document.getElementById('myModal');

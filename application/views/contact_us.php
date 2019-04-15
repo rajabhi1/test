@@ -1,4 +1,3 @@
-<?php include('header.php'); ?>
 <div class="container p-4">
 	<div class="row">
 		<div class="col-lg-6">
@@ -56,4 +55,3 @@
 		</div>      
 	</div>
 </div>
-<?php include('footer.php'); ?>

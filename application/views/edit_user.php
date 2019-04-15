@@ -1,6 +1,4 @@
-<?php include('header.php'); ?>
 <div class="container p-5">
-
 	<?= form_open_multipart("admin/update/{$userdata->id}") ?>
   <fieldset>
     <legend class="text-center text-success">Fill user data</legend>
@@ -44,4 +42,3 @@
   </fieldset>
 <?= form_close(); ?>
 </div>
-<?php include('footer.php'); ?>

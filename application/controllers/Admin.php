@@ -4,18 +4,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Admin extends CI_Controller{
 
 	public function about_us(){
-
+		$this->load->library('cart');
+		$data['alldata']=$this->cart->contents();
+		$this->load->view('header', $data);
 		$this->load->view('about');
+		$this->load->view('footer');
 	}
 
 	public function contactus(){
-
+		$this->load->library('cart');
+		$data['alldata']=$this->cart->contents();
+		$this->load->view('header', $data);
 		$this->load->view('contact_us');
+		$this->load->view('footer');
 	}
 
 	public function enquery(){
 		if(!$this->form_validation->run('contact_form')){
+			$this->load->library('cart');
+			$data['alldata']=$this->cart->contents();
+			$this->load->view('header', $data);
 			$this->load->view('contact_us');
+			$this->load->view('footer');
+			// $this->load->view('contact_us');+
 		}else{
 			$name=$this->input->post('username');
 			$phone=$this->input->post('phone');
@@ -66,9 +77,14 @@ class Admin extends CI_Controller{
 			'first_tag_close'=>"</li>",
 		];
 		$this->pagination->initialize($config);
+		$this->load->library('cart');
+		$records['alldata']=$this->cart->contents();
 		$records['alluser']=$this->record_model->all_records($config['per_page'],$this->uri->segment(3));
 			if($records){
-			$this->load->view('admin_view',$records);
+				$this->load->view('header', $records);
+				$this->load->view('admin_view');
+				$this->load->view('footer');
+			// $this->load->view('admin_view',$records);
 			}else{
 				echo'1';
 			}		
@@ -81,8 +97,13 @@ class Admin extends CI_Controller{
 			$this->index();
 		}else{
 			$query=$this->input->post('query');
+			$this->load->library('cart');
+			$data['alldata']=$this->cart->contents();
 			$data['searchquery']=$this->record_model->search($query);
-			$this->load->view('search_view',$data);
+			$this->load->view('header',$data);
+			// $this->load->view('header', $records);
+				$this->load->view('search_view');
+				$this->load->view('footer');
 		}
 	}
 
@@ -110,17 +131,28 @@ class Admin extends CI_Controller{
 		redirect('admin');
 	}
 
-	public function dashboard(){
-		$userlist['alldata']=$this->record_model->get_user();
+	public function dashboard()
+	{
+		$this->load->library('cart');
+		$userlist['alldata']=$this->cart->contents();
+		$userlist['allrecords']=$this->record_model->get_user();
 		if($userlist){
+			$this->load->view('header', $userlist);
+			$this->load->view('dashboard');
+			$this->load->view('footer');
 			// echo "<pre>"; print_r($this->record_model->get_user()); echo "</pre>"; die();
-			$this->load->view('dashboard',$userlist);
+			// $this->load->view('dashboard',$userlist);
 		}
 		
 	}
 
 	public function add_user(){
+		$this->load->library('cart');
+		$data['alldata']=$this->cart->contents();
+		$this->load->view('header', $data);
 		$this->load->view('adduser');
+		$this->load->view('footer');
+		// $this->load->view('adduser');
 	}
 	public function userdata(){
 		$config=[
@@ -146,17 +178,27 @@ class Admin extends CI_Controller{
 			}
 			// echo "<pre>"; print_r($post); echo "</pre>"; die();
 		}else{
+			$this->load->library('cart');
+			$upload_error['alldata']=$this->cart->contents();
 			$upload_error['img_error']=$this->upload->display_errors();
-			$this->load->view('adduser',$upload_error);
+			$this->load->view('header',$upload_error);
+			$this->load->view('header', $data);
+			$this->load->view('adduser');
+			$this->load->view('footer');
 		}
 	}
 
 	public function edit_data(){
 
 		$id=$this->uri->segment(3);
+		$this->load->library('cart');
+		$data['alldata']=$this->cart->contents();
 		$data['userdata']=$this->record_model->edit($id);
 		if($data){
-		$this->load->view('edit_user',$data);
+			$this->load->view('header', $data);
+			$this->load->view('edit_user');
+			$this->load->view('footer');
+		// $this->load->view('edit_user',$data);
 		}
 
 	}
@@ -185,8 +227,12 @@ class Admin extends CI_Controller{
 			}
 			
 		}else{
+			$this->load->library('cart');
+			$upload_error['alldata']=$this->cart->contents();
 			$upload_error['img_error']=$this->upload->display_errors();
-			$this->load->view('edit_user',$upload_error);
+			$this->load->view('header',$upload_error);
+			$this->load->view('edit_user');
+			$this->load->view('footer');
 		
 		}
 	}
@@ -256,9 +302,76 @@ class Admin extends CI_Controller{
     	}
 
     	public function category(){
+    		$this->load->library('cart');
+    		$data['alldata']=$this->cart->contents();
+    		$data['allproduct']=$this->record_model->get_product();
+    		$this->load->view('header', $data);
     		$this->load->view('category');
+    		$this->load->view('footer');
+    		
+    		
     	}
 
+    	public function add_to_cart()
+    	{
+    		$id=$this->uri->segment(3);
+    		$product=$this->record_model->product($id);
+  			if($product){
+	  			foreach ($product as $key => $value) {
+	  				$this->load->library('cart');
+			    		$data = array(
+						        'id'      => $value['id'],
+						        'qty'     => 1,
+						        'price'   => $value['price'],
+						        'name'    => $value['name']
+						        // 'coupon'         => 'XMAS-50OFF'
+						);
+				$this->cart->insert($data);
+	  			}
+	  			redirect('admin/category');
+	  		}else{
+	  			echo'dsgf';
+	  		}    		
+    	}
 
+    	public function cartdata(){
+    		$this->load->library('cart');
+    		$data['alldata']=$this->cart->contents();
+    		$this->load->view('header', $data);
+    		$this->load->view('cart_view');
+    		$this->load->view('footer');
+    	}
+
+    	public function update_cart(){
+    		// echo "<pre>"; print_r($this->input->post()); echo "</pre>"; die();
+    		
+    		$data=$this->input->post(); 
+    		$this->load->library('cart');
+    		$this->cart->update($data);
+    		redirect('admin/cartdata');
+    	}
+
+    	public function remove_cart(){
+    		$id=$this->uri->segment(3);
+    		$this->load->library('cart');
+    		$this->cart->remove($id);
+    		redirect('admin/cartdata');
+    	}
+
+    	public function uptodate($year=null,$month=null){
+
+    			$config=array(
+    						'start_day'=>'monday',
+    						'show_next_prev'=>true,
+    						'next_prev_url'=>base_url().'admin/uptodate'
+    			);
+				$this->load->library('Calendar',$config);
+				echo $this->calendar->generate($year,$month);
+    	}
+
+    	public function calculator()
+    	{
+    		$this->load->view('calculator');
+    	}
 	}
 ?>
